@@ -1,19 +1,13 @@
 import { analyzeResults } from "./utils/analysis";
 import { writeFileSync } from "fs";
 import { checkAnswers } from "./utils/exam";
+import config from "./config.json";
 
-const studentName = "John_Doe";
-const userData = ["A", "B", "X", "D", "E"];
-const correctData = ["B", "A", "D", "C", "E"];
-const subjectData = [
-  "Trigonometry",
-  "Integral",
-  "Derivative",
-  "Triangle",
-  "Geometric",
-];
-
-const results = checkAnswers(userData, correctData, subjectData);
+const results = checkAnswers(
+  config?.userData,
+  config?.correctData,
+  config?.subjectData
+);
 const analysis = analyzeResults(results);
 
 let output = "";
@@ -34,8 +28,8 @@ if (analysis.emptySubjects.length > 0) {
 }
 
 try {
-  writeFileSync(`${studentName}.txt`, output, { encoding: "utf-8" });
-  console.log(`Analysis saved to ${studentName}.txt`);
+  writeFileSync(`${config?.studentName}.txt`, output, { encoding: "utf-8" });
+  console.log(`Analysis saved to ${config?.studentName}.txt`);
 } catch (err) {
   console.error("Error writing TXT file:", err);
 }
@@ -50,11 +44,13 @@ const jsonOutput = {
 
 try {
   writeFileSync(
-    `${studentName}.json`,
+    `${config?.studentName}.json`,
     JSON.stringify(jsonOutput, null, 2),
-    { encoding: "utf-8" }
+    {
+      encoding: "utf-8",
+    }
   );
-  console.log(`Analysis saved to ${studentName}.json`);
+  console.log(`Analysis saved to ${config?.studentName}.json`);
 } catch (err) {
   console.error("Error writing JSON file:", err);
 }
